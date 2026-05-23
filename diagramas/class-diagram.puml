@@ -1,0 +1,15 @@
+@startuml class
+
+class OrdemServicos{
+
+}
+
+class Servicos{
+
+}
+
+class Items{
+  
+}
+
+@enduml
