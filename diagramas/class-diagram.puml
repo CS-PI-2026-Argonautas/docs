@@ -24,14 +24,16 @@ class PessoaFisica{
 }
 
 class OrdemServicos{
+  Servicos[] servicos;
+  Item[] items;
 
 }
 
-class Servicos{
+class Servico{
 
 }
 
-class Items{
+class Item{
   
 }
 
