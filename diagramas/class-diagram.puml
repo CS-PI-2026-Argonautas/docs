@@ -1,5 +1,28 @@
 @startuml class
 
+abstract class Cliente{
+  int id;
+  String nome;
+  Endereco endereco;
+  String telefone;
+  String email;
+  String obs;
+
+}
+
+class PessoaJuridica {
+  int id;
+  
+  String cnpj;
+  String setor;
+}
+
+class PessoaFisica{
+  int id;
+
+  String cpf;
+}
+
 class OrdemServicos{
 
 }
@@ -11,5 +34,8 @@ class Servicos{
 class Items{
   
 }
+
+Cliente <-- PessoaFisica
+Cliente <-- PessoaJuridica
 
 @enduml
