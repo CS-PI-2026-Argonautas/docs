@@ -34,10 +34,13 @@ class Servico{
 }
 
 class Item{
+  String nome;
   
 }
 
-Cliente <-- PessoaFisica
-Cliente <-- PessoaJuridica
+Cliente <|-- PessoaFisica
+Cliente <|-- PessoaJuridica
+Servico --* OrdemServicos
+Item --* OrdemServicos
 
 @enduml
