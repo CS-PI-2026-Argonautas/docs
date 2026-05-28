@@ -81,7 +81,9 @@ enum TipoItem {
   PECA,
 }
 
-Cliente <-- PessoaFisica
-Cliente <-- PessoaJuridica
+Cliente <|-- PessoaFisica
+Cliente <|-- PessoaJuridica
+Servico --* OrdemServicos
+Item --* OrdemServicos
 
 @enduml
