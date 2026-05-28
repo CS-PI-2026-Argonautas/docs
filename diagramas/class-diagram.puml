@@ -24,17 +24,61 @@ class PessoaFisica{
 }
 
 class OrdemServicos{
-  Servicos[] servicos;
+  Servico[] servicos;
   Item[] items;
+  Equipamento equipamento;
+  Cliente cliente;
+  Date data;
+  StatusOrdemServico status;
+  String relatorio;
+}
 
+class Equipamento {
+  String marca;
+  String modelo;
+  String numeroSerie;
+  String portaria;
+  String numeroInmetro;
+  String numeroVerificacao;
+  String seloAnterior;
+  String seloAtual;
+  String lacreAnterior;
+  String lacreAtual;
+}
+
+class Endereco {
+  String cep;
+  String rua;
+  String complemento;
+  String cidade;
+  String numero;
+  String uf;
 }
 
 class Servico{
-
+  String nome,
+  String descricao,
+  BigDecimal valor,
 }
 
 class Item{
-  
+  String nome;
+  String descricao;
+  TipoItem tipo;
+  BigDecimal valor;
+}
+
+enum StatusOrdemServico {
+  EM_ORCAMENTO, 
+  EM_CONSERTO,
+  CONCLUIDA,
+  ENTREGUE,
+  PAGA,
+}
+
+enum TipoItem {
+  BALANCA,
+  PECA,
 }
 
 Cliente <-- PessoaFisica
