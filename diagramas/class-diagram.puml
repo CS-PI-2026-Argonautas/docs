@@ -1,10 +1,32 @@
 @startuml class
 
-abstract class Cliente{
-  int id;
+abstract class Pessoa{
   String nome;
   Endereco endereco;
   String telefone;
+}
+
+class Funcionario{
+
+  String nome;
+  String cpf;
+  Cargo cargo;
+  Turno turno;
+
+}
+
+enum Turno{
+  NOTURNO,
+  DIURNO,
+}
+
+class Cargo{
+  String nome;
+  double salario;
+}
+
+abstract class Cliente{
+  int id;
   String email;
   String obs;
 
@@ -24,16 +46,19 @@ class PessoaFisica{
 }
 
 class OrdemServicos{
+  int id;
   Servico[] servicos;
-  Item[] items;
+  Peca[] peca;
   Equipamento equipamento;
   Cliente cliente;
+  Funcionario responsavel;
   Date data;
   StatusOrdemServico status;
   String relatorio;
 }
 
 class Equipamento {
+  int id;
   String marca;
   String modelo;
   String numeroSerie;
@@ -47,6 +72,7 @@ class Equipamento {
 }
 
 class Endereco {
+  int id;
   String cep;
   String rua;
   String complemento;
@@ -56,12 +82,14 @@ class Endereco {
 }
 
 class Servico{
+  int id;
   String nome,
   String descricao,
   BigDecimal valor,
 }
 
-class Item{
+class Peca{
+  int id;
   String nome;
   String descricao;
   TipoItem tipo;
@@ -76,14 +104,22 @@ enum StatusOrdemServico {
   PAGA,
 }
 
-enum TipoItem {
-  BALANCA,
-  PECA,
-}
-
 Cliente <|-- PessoaFisica
 Cliente <|-- PessoaJuridica
 Servico --* OrdemServicos
-Item --* OrdemServicos
+Funcionario --* OrdemServicos
+
+Funcionario <-- Turno
+Funcionario <-- Cargo
+
+Equipamento *-- OrdemServicos
+StatusOrdemServico *-- OrdemServicos
+Endereco *-- Pessoa
+Peca o-- OrdemServicos
+
+OrdemServicos *-- Cliente
+
+Pessoa <|-- Funcionario
+Cliente --|> Pessoa
 
 @enduml
