@@ -1,0 +1,43 @@
+@startuml usecase
+left to right direction
+skinparam actorPosition left
+
+together{
+  actor :Funcionário: as func <<Humano>> 
+  actor :Usuário: as user <<Humano>> 
+
+}
+
+together{
+  actor :Base Local: as sqlite <<Aplicação>> 
+  actor :Base Externa: as springapp <<Aplicação>>
+}
+
+rectangle "Sistema: Argos"{
+  package "Gerenciamento de OS" {
+
+    "Registrar uma Ordem de Serviço" as (NewOS)
+    "Registrar Endereço" as (nendereco) 
+    "Registrar Contato" as (ncontato) 
+    
+    "Registrar novo cliente" as (NewUser)
+    "Visualizar estado do serviço" as (ServStatus)
+    "Visualizar estado da OS" as (ReadOS)
+    "Editar OS" as (UpdtOS)
+  }
+
+}
+
+NewUser --> nendereco : include
+NewUser --> ncontato : include
+ReadOS -> UpdtOS : extends
+
+
+func --> NewOS
+func --> NewUser
+func --> ReadOS
+func --> UpdtOS
+user --> ServStatus
+
+
+@enduml
