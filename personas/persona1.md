@@ -1,0 +1,6 @@
+# Persona primária: Bernardo Boracea
+
+Bernardo Boracea, mato-grossense, tem 53 anos de idade e é dono de uma empresa de manutenção de balanças industriais e comerciais, experiente na manutenção e graduado com técnico de engenharia elétrica, está também familiarizado com regulamentos do Inmetro. Bernardo quer fazer a sua startup gerar lucro e atingir as suas metas, e para isso guarda as suas Ordens de Serviço, fluxo principal da empresa com fichas de papel.
+Todos os dias ele realiza a manutenção e faz a busca e entrega de equipamentos, registrando tudo em papel, recentemente percebeu que o papel fica extremamente confuso de organizar, e quase perdeu uma entrega por causa de uma ordem de serviço perdida. Além de ter que verificar quais peças estão faltando e necessitam ser repostas, já que muitas peças existem em sua oficina.
+Para o conserto, ele tira e registra a informação majoritariamente indo as clientes e fornecendo as atualizações por ali, o que faz com que o acesso ao celular, seja melhor para registro e manuseio de Ordens de serviço
+Ele espera um jeito rápido, prático e com segurança de dados para armazenar as suas ordens de serviços, específicas para a sua empresa. Especialmente considerando as suas necessidades
