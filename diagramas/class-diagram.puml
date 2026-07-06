@@ -1,64 +1,59 @@
 @startuml class
 
 abstract class Pessoa{
+  String id;
   String nome;
   Endereco endereco;
   String telefone;
 }
 
 class Funcionario{
-
-  String nome;
   String cpf;
   Cargo cargo;
   Turno turno;
-
-}
-
-enum Turno{
-  NOTURNO,
-  DIURNO,
 }
 
 class Cargo{
+  String id;
   String nome;
   double salario;
 }
 
 abstract class Cliente{
-  int id;
   String email;
   String obs;
-
 }
 
 class PessoaJuridica {
-  int id;
-  
   String cnpj;
   String setor;
 }
 
 class PessoaFisica{
-  int id;
-
   String cpf;
 }
 
 class OrdemServicos{
-  int id;
-  Servico[] servicos;
-  Peca[] peca;
-  Equipamento equipamento;
-  Cliente cliente;
-  Funcionario responsavel;
+  String id;
   Date data;
   StatusOrdemServico status;
   String relatorio;
 }
 
+class ItemPecaOS{
+  String id;
+  int quantidade;
+  BigDecimal valorUnitarioCobrado;
+  BigDecimal descontoAplicado;
+}
+
+class ItemServicoOS{
+  String id;
+  int quantidade;
+  BigDecimal valorCobrado;
+}
+
 class Equipamento {
-  int id;
   String marca;
   String modelo;
   String numeroSerie;
@@ -72,7 +67,7 @@ class Equipamento {
 }
 
 class Endereco {
-  int id;
+  String id;
   String cep;
   String rua;
   String complemento;
@@ -82,44 +77,55 @@ class Endereco {
 }
 
 class Servico{
-  int id;
-  String nome,
-  String descricao,
-  BigDecimal valor,
+  String id;
+  String nome;
+  String descricao;
+  BigDecimal valorBase;
 }
 
 class Peca{
-  int id;
+  String id;
   String nome;
   String descricao;
   TipoItem tipo;
-  BigDecimal valor;
+  BigDecimal valorBase;
 }
 
 enum StatusOrdemServico {
-  EM_ORCAMENTO, 
+  EM_ORCAMENTO,
   EM_CONSERTO,
   CONCLUIDA,
   ENTREGUE,
   PAGA,
 }
 
+class Empresa {
+  String cnpj
+  String inscricaoMunicipal
+  String inscricaoEstadual
+  String telefone
+  Endereco endereco
+}
+
+Pessoa <|-- Cliente
+Pessoa <|-- Funcionario
 Cliente <|-- PessoaFisica
 Cliente <|-- PessoaJuridica
-Servico --* OrdemServicos
-Funcionario --* OrdemServicos
 
-Funcionario <-- Turno
-Funcionario <-- Cargo
+Funcionario --> Cargo
 
-Equipamento *-- OrdemServicos
-StatusOrdemServico *-- OrdemServicos
-Endereco *-- Pessoa
-Peca o-- OrdemServicos
+OrdemServicos --> Cliente
+OrdemServicos --> Funcionario 
 
-OrdemServicos *-- Cliente
+OrdemServicos *-- "1" Equipamento 
 
-Pessoa <|-- Funcionario
-Cliente --|> Pessoa
+OrdemServicos *-- ItemPecaOS 
+ItemPecaOS --> Peca 
+
+OrdemServicos *-- ItemServicoOS
+ItemServicoOS --> Servico
+
+Pessoa *-- Endereco 
+Empresa *-- Endereco 
 
 @enduml
