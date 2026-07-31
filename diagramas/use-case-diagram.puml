@@ -1,43 +1,105 @@
 @startuml usecase
 left to right direction
-skinparam actorPosition left
 
-together{
-  actor :Funcionário: as func <<Humano>> 
-  actor :Usuário: as user <<Humano>> 
-
-}
+' 1. DECLARAÇÃO DOS ATORES (Garante a ordem dos blocos no espaço global)
+actor :Funcionário: as func <<Humano>> 
+actor :Usuário: as user <<Humano>> 
 
 together{
   actor :Base Local: as sqlite <<Aplicação>> 
   actor :Base Externa: as springapp <<Aplicação>>
 }
-
-rectangle "Sistema: Argos"{
-  package "Gerenciamento de OS" {
-
-    "Registrar uma Ordem de Serviço" as (NewOS)
-    "Registrar Endereço" as (nendereco) 
-    "Registrar Contato" as (ncontato) 
-    
-    "Registrar novo cliente" as (NewUser)
-    "Visualizar estado do serviço" as (ServStatus)
-    "Visualizar estado da OS" as (ReadOS)
-    "Editar OS" as (UpdtOS)
+' 2. ESTRUTURA DO SISTEMA
+rectangle "Sistema: Argos" as Argos {
+  
+  package "Serviço de Login"{
+    (Login) as "Entrar como cliente"
+    (LoginAdmin) as "Entrar como funcionario"
+    (Signin)
   }
 
+  package "Gerenciamento de Estoque" {
+    (NewPart) as "Registrar Peça"
+    (ReadPart) as "Visualizar Peça"
+    (DeletePart) as "Remover Peça"
+    (UpdtPart) as "Editar Peça"
+
+  }
+
+ 
+
+  package "Gerenciamento de Clientes" {
+
+    (nendereco) as "Registrar Endereço"
+    (ncontato) as "Registrar Contato"
+    (NewClient) as "Registrar novo cliente"
+    (DeleteClient)
+    (UpdtClient)
+    (ReadClient)
+  }
+
+  package "Gerenciamento de OS" {
+    (NewOS) as "Registrar uma Ordem de Serviço"
+    (ListOS) as "Listar ordens de serviço"
+    (ServStatus) as "Visualizar estado do serviço"
+    (ReadOS) as "Visualizar estado da OS"
+    (UpdtOS) as "Editar OS"
+  }
+
+  package "Serviço de Conexão" {
+    (Timer) as "Upload definido por tempo (A cada 5 minutos)"
+    (CheckWifi) as "Detectar conexão com Wi-Fi"
+  }
+
+  package "Serviço Repositório" {
+    (CreateLocal) as "Inserir em DB Local"
+    (DeleteLocal) as "Remover do DB Local"
+    (ReadLocal) as "Ler DB Local"
+    (UpdtLocal) as "Alterar DB Local"
+  }
+
+
+  package "Serviço Upload"{
+    
+    (CreateEx) as "Requisito de Inserir base externa"
+    (DeleteEx) as "Requisito de Remover base externa"
+    (ReadEx) as " Requisito de Ler base externa"
+    (UpdtEx) as "Requisito de alterar base externa"
+  }
 }
 
-NewUser --> nendereco : include
-NewUser --> ncontato : include
-ReadOS -> UpdtOS : extends
+' 3. LIGAÇÕES ESQUERDA -> CENTRO (Atores Humanos conectando nos Casos de Uso)
+user --> Login
+user --> Signin
+func --> user
+func --> LoginAdmin
+LoginAdmin --> "Gerenciamento de Clientes"
+LoginAdmin --> "Gerenciamento de OS"
+LoginAdmin --> "Gerenciamento de Estoque"
+
+Login --> ServStatus
+
+' 4. RELACIONAMENTOS INTERNOS
+NewClient ..> CreateLocal : <<include>>
+NewClient ..> nendereco : <<include>>
+NewClient ..> ncontato : <<include>>
+UpdtOS ..> ReadOS : <<extend>>
+UpdtOS --> UpdtLocal
+ReadOS --> ReadLocal
 
 
-func --> NewOS
-func --> NewUser
-func --> ReadOS
-func --> UpdtOS
-user --> ServStatus
+' 5. LIGAÇÕES CENTRO -> DIREITA (Casos de Uso conectando nos Bancos de Dados)
+' A seta obrigatoriamente aponta para a direita (-->) partindo do caso de uso para o actor
+"Serviço Repositório" --> "Serviço de Conexão"
+"Serviço de Conexão" --> "Serviço Upload"
+CreateLocal --> sqlite
+DeleteLocal --> sqlite
+ReadLocal --> sqlite
+UpdtLocal --> sqlite
 
+CreateEx --> springapp
+DeleteEx --> springapp
+ReadEx --> springapp
+UpdtEx --> springapp
 
 @enduml
