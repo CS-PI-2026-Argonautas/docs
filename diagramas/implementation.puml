@@ -1,0 +1,43 @@
+@startuml
+left to right direction
+
+component "Bernadelli Balanças"{
+  component "Armazenamento Local"{
+
+  }
+  component "Requisição" as request{
+
+  }
+}
+
+
+component "Spring Boot" as restserver{
+
+  component "backend"{
+
+    component RestController{
+
+    }
+
+    component Service{
+
+    }
+
+    component Repository{
+
+    }
+
+  }
+
+}
+
+component "PostgreSQL Server" as sqlserver{
+
+}
+
+request --> restserver
+
+restserver --> sqlserver
+
+
+@enduml

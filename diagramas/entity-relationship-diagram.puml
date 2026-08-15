@@ -1,0 +1,77 @@
+@startchen erdiagram
+left to right direction
+
+entity CLIENTE{
+
+}
+
+entity FUNCIONARIO {
+  Cargo
+  Turno
+}
+
+entity EQUIPAMENTO{
+  Tipo
+}
+
+entity SERVICO {
+  Tipo
+}
+
+entity PECA {
+
+}
+
+entity ORDEM{
+  Data
+  Status da Ordem
+}
+
+entity ENDERECO{
+
+}
+
+
+relationship Realiza{
+
+}
+
+relationship Recebe{
+
+}
+
+relationship Solicita{
+
+}
+
+relationship Repara{
+
+}
+
+relationship Necessita{
+
+}
+
+relationship Mora{
+
+}
+
+FUNCIONARIO -(1,N)- Realiza
+Realiza -(0,1)- SERVICO
+
+FUNCIONARIO -(0,1)- Recebe
+Recebe -(0,N)- ORDEM
+
+CLIENTE -(1,N)- Solicita
+Solicita -(1,1)- ORDEM
+
+SERVICO -(1,N)- Repara
+Repara -(1,N)- EQUIPAMENTO
+
+SERVICO -(0,N)- Necessita 
+Necessita -(0,1)- PECA
+
+CLIENTE -(1,N)- Mora
+Mora -(1,1)- ENDERECO
+
+@endchen

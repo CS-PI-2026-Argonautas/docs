@@ -1,0 +1,59 @@
+@startuml
+left to right direction
+
+node "<<device>> Máquina Cliente" as clientdevice {
+  
+  component "<<executionEnvironment>> Android" as android{
+      database "<<artifact>> Armazenamento Local" as local{
+
+  }
+
+  component "<<executionEnvironment>> Aplicativo Flutter"{
+    
+    
+    component Sqflite/Drift as sqlite{
+
+    }
+
+    component "Dart HTTP library" as httpdart{
+
+    }
+
+
+  }
+  }
+
+
+
+}
+
+(HTTPS) as req
+
+node "<<device>> Servidor Externo" as serverdevice{
+  component "<<executionEnvironment>> Java Virtual Machine"{
+    component "<<artifact>> Spring Boot Web" as spring{
+
+    }
+    component "<<artifact>> JpaRepository" as repo{
+
+    }
+  }
+
+  database PostgreSQL as postgres{
+
+  }
+
+}
+
+
+local <-- sqlite
+
+httpdart --> req
+
+
+req -> spring
+
+repo --> postgres: "Driver PostgreSQL"
+
+
+@enduml
