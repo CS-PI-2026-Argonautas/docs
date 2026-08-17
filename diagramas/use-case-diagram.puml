@@ -14,17 +14,19 @@ rectangle "Sistema: Argos" as Argos {
     (Signin)
   }
 
-
-  (ClientCRUD) as "Gerenciamento de Clientes"
+  package "Servicos principais"{
   (OSCRUD) as "Gerenciamento de OS"
+  (ClientCRUD) as "Gerenciamento de Clientes"
+  
+  (OSViz) as "Visualizar estado das Ordens"
   (PartCRUD) as "Gerenciamento de Estoque"
-  (LocalDB) as "Base Interna"
-  (ExternalDB) as "Base Externa"
+  }
  
 }
 
 ' 3. LIGAÇÕES ESQUERDA -> CENTRO (Atores Humanos conectando nos Casos de Uso)
 user --> Login
+Login --> OSViz
 user --> Signin
 func --> user
 func --> LoginAdmin

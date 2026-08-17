@@ -1,26 +1,25 @@
-@startuml
+@startuml Implantação
 left to right direction
 
 node "<<device>> Máquina Cliente" as clientdevice {
   
   component "<<executionEnvironment>> Android" as android{
-      database "<<artifact>> Armazenamento Local" as local{
 
-  }
-
-  component "<<executionEnvironment>> Aplicativo Flutter"{
-    
-    
-    component Sqflite/Drift as sqlite{
+    database "<<artifact>> Armazenamento Local" as local{
 
     }
 
-    component "Dart HTTP library" as httpdart{
+    component "<<executionEnvironment>> Aplicativo Flutter"{
+      
+      component Sqflite/Drift as sqlite{
+
+      }
+
+      component "Dart HTTP library" as httpdart{
+
+      }
 
     }
-
-
-  }
   }
 
 
@@ -51,7 +50,7 @@ local <-- sqlite
 httpdart --> req
 
 
-req -> spring
+req --> spring
 
 repo --> postgres: "Driver PostgreSQL"
 

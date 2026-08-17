@@ -1,33 +1,96 @@
-@startuml
+@startuml Implementação
 left to right direction
 
 component "Bernadelli Balanças"{
+
+  
+
+  component Dart{
+    component Flutter{
+      component Material3{
+         
+      }
+    }
+    component Sqflite{
+
+    }
+
+    component Drift{
+
+  }
+
+    component "HTTP" as request{
+
+    }
+  }
+
   component "Armazenamento Local"{
 
   }
-  component "Requisição" as request{
-
-  }
+  
 }
 
 
-component "Spring Boot" as restserver{
+component "Servidor" as restserver{
 
-  component "backend"{
 
-    component RestController{
+
+    component Maven{
+
+      component ModelMapper{
+
+      }
+
+      component SpringBoot{
+
+      component SpringWebMVC{
+          component "RESTful API"{
+
+          }
+      }
+
+      component SpringData{
+
+      }
+
+      component SpringSecurity{
+
+      }
+
+      component SpringValidation{
+
+      }
+
+      component Thymeleaf{
+
+      }
+
+      component EmailSender{
+
+      }
+
+      component Lombok{
+
+
+      }
+
+      component OpenApiWebMvcUi{
+
+      }
+
+      component SpringDevTools{
+        
+      }
+
+      component "PostgreSQL Driver"{
+
+      }
+
+      }
 
     }
 
-    component Service{
-
-    }
-
-    component Repository{
-
-    }
-
-  }
+  
 
 }
 
