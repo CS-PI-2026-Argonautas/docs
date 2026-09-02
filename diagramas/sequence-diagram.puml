@@ -1,0 +1,27 @@
+@startuml connection
+actor "Usuário" as user
+participant "Cliente" as cliente
+database "Sqlite Local" as local
+participant "Servidor" as server
+database "PostgreSQL" as db
+
+user --> cliente: Executa aplicativo
+group "Verificar conexão"
+
+  cliente -> cliente: Verifica conexão com a internet
+  else "Connection established"
+    loop
+      user -> cliente: Interaje com o front
+      cliente-> server: Requisição HTTP
+      server -> db: Consulta ou persistência
+      server <- db: Resposta da consulta
+      cliente <- server: DTO de Resposta e HTTP Status
+    end
+  else "Sem internet"
+    loop
+      user -> cliente: Interaje com o front
+      cliente --> local: Consulta armazenamento local
+      local -> cliente: Resultado da consulta
+      cliente -> user: Mostra resultado
+    end
+@enduml

@@ -1,43 +1,46 @@
 @startuml usecase
 left to right direction
-skinparam actorPosition left
 
-together{
-  actor :Funcionário: as func <<Humano>> 
-  actor :Usuário: as user <<Humano>> 
+' 1. DECLARAÇÃO DOS ATORES (Garante a ordem dos blocos no espaço global)
+actor :Funcionário: as func <<Humano>> 
+actor :Usuário: as user <<Humano>> 
 
-}
-
-together{
-  actor :Base Local: as sqlite <<Aplicação>> 
-  actor :Base Externa: as springapp <<Aplicação>>
-}
-
-rectangle "Sistema: Argos"{
-  package "Gerenciamento de OS" {
-
-    "Registrar uma Ordem de Serviço" as (NewOS)
-    "Registrar Endereço" as (nendereco) 
-    "Registrar Contato" as (ncontato) 
-    
-    "Registrar novo cliente" as (NewUser)
-    "Visualizar estado do serviço" as (ServStatus)
-    "Visualizar estado da OS" as (ReadOS)
-    "Editar OS" as (UpdtOS)
+' 2. ESTRUTURA DO SISTEMA
+rectangle "Sistema: Argos" as Argos {
+  
+  package "Serviço de Login"{
+    (Login) as "Entrar como cliente"
+    (LoginAdmin) as "Entrar como funcionario"
+    (Signin)
   }
 
+  package "Servicos principais"{
+  (OSCRUD) as "Gerenciamento de OS"
+  (ClientCRUD) as "Gerenciamento de Clientes"
+  
+  (OSViz) as "Visualizar estado das Ordens"
+  (PartCRUD) as "Gerenciamento de Estoque"
+  }
+ 
 }
 
-NewUser --> nendereco : include
-NewUser --> ncontato : include
-ReadOS -> UpdtOS : extends
+' 3. LIGAÇÕES ESQUERDA -> CENTRO (Atores Humanos conectando nos Casos de Uso)
+user --> Login
+Login --> OSViz
+user --> Signin
+func --> user
+func --> LoginAdmin
+LoginAdmin --> ClientCRUD
+LoginAdmin --> OSCRUD
+LoginAdmin --> PartCRUD
 
 
-func --> NewOS
-func --> NewUser
-func --> ReadOS
-func --> UpdtOS
-user --> ServStatus
+
+' 4. RELACIONAMENTOS INTERNOS
+
+
+' 5. LIGAÇÕES CENTRO -> DIREITA (Casos de Uso conectando nos Bancos de Dados)
+' A seta obrigatoriamente aponta para a direita (-->) partindo do caso de uso para o actor
 
 
 @enduml
