@@ -2,20 +2,21 @@
 
 ```mermaid
 erDiagram
-  "clientes/{clienteId}" ||--o{ "clientes/{clienteId}/enderecos/{enderecoId}" : "1 cliente : N endereços"
-  "ordens_servico/{osId}" }o--o{ "itens/{itemId}" : "embedding"
-  "ordens_servico/{osId}" }o--o{ "servicos/{servicoId}" : "embedding"
-  "ordens_servico/{osId}" ||--|| "equipamento (embutido)" : "1:1, sem coleção própria"
-  "ordens_servico/{osId}" }o--|| "clientes/{clienteId}" : "copia + guarda id"
-  "ordens_servico/{osId}" }o--|| "clientes/{clienteId}/enderecos/{enderecoId}" : "copia + guarda id (endereco_servico)"
+direction LR
+  "clientes/{clienteId}" ||--o{ "clientes/{clienteId}/enderecos/{enderecoId}" : "1 cliente : N endereços (Subcoleção)"
+  "ordens_servico/{osId}" }o--|| "clientes/{clienteId}" : "1:N (Embedding com Snapshot)"
+  "ordens_servico/{osId}" }o--|| "clientes/{clienteId}/enderecos/{enderecoId}" : "1:N (Embedding com Snapshot)"
+  "ordens_servico/{osId}" }o--o{ "itens/{itemId}" : "N:N (Embedding com Snapshot)"
+  "ordens_servico/{osId}" }o--o{ "servicos/{servicoId}" : "N:N (Embedding com Snapshot)"
+  "ordens_servico/{osId}" ||--|| "equipamento (embutido)" : "1:1 (Embedding sem ID)"
 ```
 
-- `clientes` -> `enderecos`: 1:N, via subcoleção.
-- `ordens_servico` -> `itens`: N:N, via embedding. A OS copia atributos do item no momento do uso (array `pecas`), e a alteração ou exclusão do item na coleção `itens/{itemId}` não muda OS já gravadas.
-- `ordens_servico` -> `servicos`: N:N, via embedding. Como feito com `itens`
-- `ordens_servico` -> `equipamento`: 1:1, via embedding. Não existe coleção `equipamentos`, o bloco só existe dentro da OS.
-- `ordens_servico` -> `clientes`: N:1, snapshot. A OS copia os campos do cliente e guarda o `id` de origem. Mudar o cliente no cadastro não muda OS já gravadas.
-- `ordens_servico` -> `enderecos`: N:1, snapshot. Mesma lógica, no campo `endereco_servico`. O cliente pode ter N endereços, a OS registra só o que foi usado naquele atendimento.
+- `clientes` -> `enderecos`: 1:N, SUBCOLEÇÃO.
+- `ordens_servico` -> `itens`: N:N, EMBEDDING COM SNAPSHOT. A OS copia atributos do item no momento do uso (array `pecas`), e a alteração ou exclusão do item na coleção `itens/{itemId}` não muda OS já gravadas.
+- `ordens_servico` -> `servicos`: N:N, EMBEDDING COM SNAPSHOT. Como feito com `itens`
+- `ordens_servico` -> `equipamento`: 1:1, EMBEDDING (sem id de origem). Não existe coleção `equipamentos`, o bloco só existe dentro da OS.
+- `ordens_servico` -> `clientes`: N:1, EMBEDDING COM SNAPSHOT. A OS copia os campos do cliente e guarda o `id` de origem. Mudar o cliente no cadastro não muda OS já gravadas.
+- `ordens_servico` -> `enderecos`: N:1, EMBEDDING COM SNAPSHOT. Mesma lógica, no campo `endereco_servico`. O cliente pode ter N endereços, a OS registra só o que foi usado naquele atendimento.
 
 ## Convenções gerais (valem para toda coleção)
 
