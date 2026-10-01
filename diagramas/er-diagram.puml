@@ -1,0 +1,183 @@
+@startuml erd
+
+hide circle
+skinparam linetype ortho
+
+entity "Endereco" as endereco {
+  * id : UUID <<PK>>
+  --
+  * cep : VARCHAR
+  * rua : VARCHAR
+  complemento : VARCHAR
+  * cidade : VARCHAR
+  * numero : VARCHAR
+  * uf : VARCHAR
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+  deleted_at : TIMESTAMP 
+}
+
+entity "Pessoa" as pessoa {
+  * id : UUID <<PK>>
+  --
+  * nome : VARCHAR
+  telefone : VARCHAR
+  * endereco_id : UUID <<FK>>
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+  deleted_at : TIMESTAMP 
+}
+
+entity "Cliente" as cliente {
+  * pessoa_id : UUID <<PK, FK>>
+  --
+  email : VARCHAR
+  obs : TEXT
+}
+
+entity "PessoaFisica" as pf {
+  * cliente_id : UUID <<PK, FK>>
+  --
+  * cpf : VARCHAR
+}
+
+entity "PessoaJuridica" as pj {
+  * cliente_id : UUID <<PK, FK>>
+  --
+  * cnpj : VARCHAR
+  setor : VARCHAR
+}
+
+entity "Cargo" as cargo {
+  * id : UUID <<PK>>
+  --
+  * nome : VARCHAR
+  * salario : DECIMAL
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+  deleted_at : TIMESTAMP 
+}
+
+entity "Funcionario" as funcionario {
+  * pessoa_id : UUID <<PK, FK>>
+  --
+  * cpf : VARCHAR
+  * cargo_id : UUID <<FK>>
+  turno : VARCHAR
+}
+
+entity "Servico" as servico {
+  * id : UUID <<PK>>
+  --
+  * nome : VARCHAR
+  descricao : TEXT
+  * valor_base : DECIMAL
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+  deleted_at : TIMESTAMP 
+}
+
+entity "Peca" as peca {
+  * id : UUID <<PK>>
+  --
+  * nome : VARCHAR
+  descricao : TEXT
+  * tipo : VARCHAR
+  * valor_base : DECIMAL
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+  deleted_at : TIMESTAMP 
+}
+
+entity "Equipamento" as equipamento {
+  * id : UUID <<PK>>
+  --
+  * marca : VARCHAR
+  * modelo : VARCHAR
+  numero_serie : VARCHAR
+  portaria : VARCHAR
+  numero_inmetro : VARCHAR
+  numero_verificacao : VARCHAR
+  selo_anterior : VARCHAR
+  selo_atual : VARCHAR
+  lacre_anterior : VARCHAR
+  lacre_atual : VARCHAR
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+  deleted_at : TIMESTAMP 
+}
+
+entity "OrdemServicos" as os {
+  * id : UUID <<PK>>
+  --
+  * data : DATE
+  * status : VARCHAR
+  relatorio : TEXT
+  * cliente_id : UUID <<FK>>
+  * funcionario_id : UUID <<FK>>
+  * equipamento_id : UUID <<FK>>
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+  deleted_at : TIMESTAMP 
+}
+
+entity "ItemPecaOS" as item_peca {
+  * id : UUID <<PK>>
+  --
+  * ordem_servico_id : UUID <<FK>>
+  * peca_id : UUID <<FK>>
+  * quantidade : INT
+  * valor_unitario_cobrado : DECIMAL
+  desconto_aplicado : DECIMAL
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+  deleted_at : TIMESTAMP 
+}
+
+entity "ItemServicoOS" as item_servico {
+  * id : UUID <<PK>>
+  --
+  * ordem_servico_id : UUID <<FK>>
+  * servico_id : UUID <<FK>>
+  * quantidade : INT
+  * valor_cobrado : DECIMAL
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+  deleted_at : TIMESTAMP 
+}
+
+entity "Empresa" as empresa {
+  * id : UUID <<PK>>
+  --
+  * cnpj : VARCHAR <<UNIQUE>>
+  inscricao_municipal : VARCHAR
+  inscricao_estadual : VARCHAR
+  telefone : VARCHAR
+  * endereco_id : UUID <<FK>>
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+  deleted_at : TIMESTAMP 
+}
+
+endereco ||--o{ pessoa
+endereco ||--o{ empresa
+
+pessoa ||--|| cliente
+pessoa ||--|| funcionario
+
+cliente ||--o| pf
+cliente ||--o| pj
+
+cargo ||--o{ funcionario
+
+cliente ||--o{ os
+funcionario ||--o{ os
+equipamento ||--|{ os
+
+os ||--o{ item_peca
+peca ||--o{ item_peca
+
+os ||--o{ item_servico
+servico ||--o{ item_servico
+
+@enduml
